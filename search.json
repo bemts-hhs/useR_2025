@@ -1,58 +1,107 @@
 [
   {
-    "objectID": "useR_2025.html#why-this-work-matters",
-    "href": "useR_2025.html#why-this-work-matters",
-    "title": "Empowering Trauma & EMS Quality Improvement with R",
-    "section": "Why this work matters",
-    "text": "Why this work matters\n\nEMS and trauma systems critically depend on timely, accurate performance data\n\nHospitals and EMS services often lack analytic infrastructure or staff\n\nMost U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry\nEach hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)\nNational Trauma Data Bank (NTDB) and National EMS Information System (NEMSIS) define strong data standards and naming conventions for data elements\nLevel I, II, and III hospitals report to NTDB, while all EMS service data will be reported to NEMSIS\nNEMSIS provides national/state/region level performance data, but local implementations for services is hard (many volunteer, low uptake of analytical resources)\nAmerican College of Surgeons (ACS) Trauma Quality Improvement Program (TQIP) provides some performance data, but not all hospitals report to TQIP (mostly Level I, II, and III programs)\nEHRs used by hospitals and EMS providers typically provide some analytical resources and reporting software, but this can be inflexible and difficult to use\ntraumar and nemsqar bring modern R-based QI tools to frontline users"
+    "objectID": "useR_2025.html#qi-matters-to-trauma-and-ems-programs",
+    "href": "useR_2025.html#qi-matters-to-trauma-and-ems-programs",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "QI Matters to Trauma and EMS Programs",
+    "text": "QI Matters to Trauma and EMS Programs\n\nEMS and trauma systems critically depend on timely, accurate performance data\nMost U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry\nEach hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)\nHospitals and EMS services often lack infrastructure for data science and/or staff\n\nEHRs and National repositories for EMS/trauma data provide limited supports for performance calculation"
   },
   {
     "objectID": "useR_2025.html#overview-national-context",
     "href": "useR_2025.html#overview-national-context",
-    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "title": "Empowering Trauma and EMS QI Processes",
     "section": "Overview: National Context",
-    "text": "Overview: National Context\n\nNTDB: trauma registry data, hospital-based\n\nNEMSIS: national EMS data, prehospital events\n\nNEMSQA: National EMS Quality Alliance\nNon-profit, expert EMS stakeholders, consistent measure development process\nFounded in 2019. In the last 3-4 years, has published 21 measures of EMS service quality for public use\nSEQIC: System Evaluation and Quality Improvement Committee\nIowa-based group of trauma stakeholders led by Iowa HHS\nOver the past two decades, the group has designed multiple QI measures for the Iowa trauma system\nConsistent element names, standardized formats\n\nIdeal foundation for reproducible QI pipelines"
+    "text": "Overview: National Context\n\nNational Trauma Data Bank: trauma registry data, hospital-based\n\nNational EMS Information System: national EMS data, prehospital events\nNTDB and NEMSIS: Consistent element names for respective registry types, standardized formats\nNational EMS Quality Alliance: National EMS Quality Alliance, expert EMS stakeholders, published 21 EMS service quality measures\nSEQIC: System Evaluation and Quality Improvement Committee, Iowa-based, designed 13 trauma system quality measures"
   },
   {
     "objectID": "useR_2025.html#introducing-traumar",
     "href": "useR_2025.html#introducing-traumar",
-    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "title": "Empowering Trauma and EMS QI Processes",
     "section": "Introducing traumar",
-    "text": "Introducing traumar\n\nImplements metrics driven the by academic literature\nRisk-adjusted mortality metrics\nW, M, and Z scores (Based on the Major Trauma Outcomes Study)\nRelative mortality metric (RMM) from Napoli et a. (2017)\nBuilt to calculate SEQIC indicators\nFriendly to NTDB data formats and others\n\nCalculates measures for Level I, II, III, and IV trauma centers\nCan perform analyses at multiple levels (i.e. hospital, regional, state)"
+    "text": "Introducing traumar\n\nImplements metrics driven the by academic literature\n\nRisk-adjusted mortality metrics\n\nW, M, and Z scores (Based on the Major Trauma Outcomes Study)\nRelative mortality metric (RMM) from Napoli et a. (2017)\n\n\nBuilt to calculate SEQIC indicators\nFriendly to NTDB data formats and others"
   },
   {
-    "objectID": "useR_2025.html#traumar-example-functions",
-    "href": "useR_2025.html#traumar-example-functions",
-    "title": "Empowering Trauma & EMS Quality Improvement with R",
-    "section": "traumar: Example Functions",
-    "text": "traumar: Example Functions\ntraumar::seqic_airway_by_year(data)\ntraumar::trauma_performance(data)\ntraumar::rmm(data)\ntraumar::rm_bin_summary(data)"
+    "objectID": "useR_2025.html#traumar-examples",
+    "href": "useR_2025.html#traumar-examples",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "traumar: Examples!",
+    "text": "traumar: Examples!\nHere, we will explore traumar::seqic_indicator_1()"
+  },
+  {
+    "objectID": "useR_2025.html#example-trauma-data",
+    "href": "useR_2025.html#example-trauma-data",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Example Trauma Data",
+    "text": "Example Trauma Data\nSee the GitHub repo for this presentation for how the data were generated.\n\n# Check out the data\ndplyr::glimpse(valid_data)\n\nRows: 500\nColumns: 10\n$ incident_id      &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16…\n$ activation_level &lt;fct&gt; Level 2, None, Level 1, Level 1, Level 1, Level 1, No…\n$ provider_type    &lt;fct&gt; Surgery/Trauma, Surgery/Trauma, Emergency Medicine, S…\n$ trauma_level     &lt;fct&gt; II, II, I, IV, II, I, I, III, III, IV, I, IV, II, III…\n$ response_minutes &lt;dbl&gt; 8.4400988, -0.3779051, 12.8394157, 4.2261894, 7.02231…\n$ provider         &lt;chr&gt; \"Dr. D\", \"Dr. A\", \"Dr. D\", \"Dr. B\", \"Dr. B\", \"Dr. B\",…\n$ Ps               &lt;dbl&gt; 0.710253388, 0.118368868, 0.001123374, 0.400708835, 0…\n$ survival         &lt;int&gt; 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1,…\n$ groups           &lt;chr&gt; \"B\", \"A\", \"D\", \"G\", \"D\", \"A\", \"A\", \"E\", \"F\", \"E\", \"G\"…\n$ death            &lt;dbl&gt; 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,…"
+  },
+  {
+    "objectID": "useR_2025.html#run-the-seqic-indicator-1-function",
+    "href": "useR_2025.html#run-the-seqic-indicator-1-function",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Run the SEQIC Indicator 1 Function",
+    "text": "Run the SEQIC Indicator 1 Function\nGroup the output by verification level and calculate 95% confidence intervals\n\nindicator_1 &lt;- valid_data |&gt; \n  traumar::seqic_indicator_1(\n  trauma_team_activation_level = activation_level,\n  trauma_team_physician_service_type = provider_type,\n  level = trauma_level,\n  included_levels = c(\"I\", \"II\", \"III\", \"IV\"),\n  unique_incident_id = incident_id,\n  response_time = response_minutes,\n  trauma_team_activation_provider = provider,\n  groups = \"trauma_level\",\n  calculate_ci = \"wilson\"\n) |&gt; \n  dplyr::select(trauma_level, tidyselect::matches(\"(?:seqic_|ci_)1[ad]\"))"
+  },
+  {
+    "objectID": "useR_2025.html#results",
+    "href": "useR_2025.html#results",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Results",
+    "text": "Results\nThe output 1!\n\nindicator_1 |&gt; \n  dplyr::mutate(\n    dplyr::across(-1, \n                  ~ ifelse(!is.na(.), \n      traumar::pretty_percent(variable = ., n_decimal = 2), NA_real_)))\n\n# A tibble: 4 × 7\n  trauma_level seqic_1a lower_ci_1a upper_ci_1a seqic_1d lower_ci_1d upper_ci_1d\n  &lt;fct&gt;        &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;      \n1 I            92.65%   82.98%      97.26%      25%      18.15%      33.29%     \n2 II           94.83%   84.7%       98.65%      23.88%   17.13%      32.16%     \n3 III          &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt;        21.98%   14.25%      32.12%     \n4 IV           &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt;        27.17%   18.67%      37.62%     \n\n\nWe are just looking at the calculated performance columns for Indicators 1a and 1d and their 95% confidence intervals. By default, the seqic_indicator_*() functions will also give the numerator and denominator."
+  },
+  {
+    "objectID": "useR_2025.html#traumar-examples-1",
+    "href": "useR_2025.html#traumar-examples-1",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "traumar: Examples!",
+    "text": "traumar: Examples!\nHere, we will explore traumar::rm_bin_summary()"
+  },
+  {
+    "objectID": "useR_2025.html#run-traumarrm_bin_summary",
+    "href": "useR_2025.html#run-traumarrm_bin_summary",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Run traumar::rm_bin_summary()",
+    "text": "Run traumar::rm_bin_summary()\nNo grouping and calculate 95% confidence intervals\n\nrm_output &lt;- valid_data |&gt; \n  traumar::rm_bin_summary(Ps_col = Ps,\n                          outcome_col = survival,\n                          group_vars = NULL,\n                          n_samples = 100,\n                          Divisor1 = 3,\n                          Divisor2 = 3,\n                          Threshold_1 = 0.8,\n                          Threshold_2 = 0.9,\n                          seed = 10232015\n                          ) |&gt; \n  dplyr::rename(RMM = population_RMM) |&gt; \n  dplyr::relocate(RMM, .before = midpoint)"
+  },
+  {
+    "objectID": "useR_2025.html#traumarrm_bin_summary-results",
+    "href": "useR_2025.html#traumarrm_bin_summary-results",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "traumar::rm_bin_summary() Results!",
+    "text": "traumar::rm_bin_summary() Results!\n\nrm_output\n\n# A tibble: 7 × 19\n  bin_number  TA_b  TD_b   N_b   EM_b AntiS_b AntiM_b bin_start bin_end      RMM\n       &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;\n1          1     1   136   137 0.993   0.0109  0.989   0.000221  0.0356 -0.00367\n2          2    23   113   136 0.831   0.118   0.882   0.0356    0.253   0.0578 \n3          3    75    61   136 0.449   0.507   0.493   0.253     0.805   0.0909 \n4          4    10     2    12 0.167   0.818   0.182   0.805     0.826   0.0835 \n5          5    11     1    12 0.0833  0.843   0.157   0.826     0.861   0.468  \n6          6    11     1    12 0.0833  0.885   0.115   0.861     0.906   0.274  \n7          7    52     3    55 0.0545  0.957   0.0433  0.906     0.993  -0.259  \n# ℹ 9 more variables: midpoint &lt;dbl&gt;, R_b &lt;dbl&gt;, population_RMM_LL &lt;dbl&gt;,\n#   population_RMM_UL &lt;dbl&gt;, population_CI &lt;dbl&gt;, bootstrap_RMM_LL &lt;dbl&gt;,\n#   bootstrap_RMM &lt;dbl&gt;, bootstrap_RMM_UL &lt;dbl&gt;, bootstrap_CI &lt;dbl&gt;"
   },
   {
     "objectID": "useR_2025.html#nemsqar-ems-qi-with-nemsis",
     "href": "useR_2025.html#nemsqar-ems-qi-with-nemsis",
-    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "title": "Empowering Trauma and EMS QI Processes",
     "section": "nemsqar: EMS QI with NEMSIS",
     "text": "nemsqar: EMS QI with NEMSIS\n\nBuilt on NEMSQA performance measures\nAutomatically detects and validates key elements\nScales to full state-level EMS datasets"
   },
   {
     "objectID": "useR_2025.html#nemsqar-example-functions",
     "href": "useR_2025.html#nemsqar-example-functions",
-    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "title": "Empowering Trauma and EMS QI Processes",
     "section": "nemsqar: Example Functions",
     "text": "nemsqar: Example Functions\nnemsqar::adult_population(data)\nnemsqar::trauma_population(data)\nnemsqar::respiratory_01(data)\n\n*_population() functions define eligible cases\nWrapper functions implement full NEMSQA measures"
   },
   {
-    "objectID": "useR_2025.html#real-world-use",
-    "href": "useR_2025.html#real-world-use",
-    "title": "Empowering Trauma & EMS Quality Improvement with R",
-    "section": "Real-world Use",
-    "text": "Real-world Use\n\ntraumar: Used to report risk-adjusted benchmarking and SEQIC indicators for all 120 trauma centers in Iowa\nnemsqar: Supporting the first statewide reporting on all NEMSQA measures in Iowa (only a few other states have done this with all 21 measures)\nReproducible, interpretable, fast"
+    "objectID": "useR_2025.html#real-world-impact",
+    "href": "useR_2025.html#real-world-impact",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Real-world Impact",
+    "text": "Real-world Impact\n\ntraumar: Risk-adjusted benchmarking + SEQIC indicators for all 120 trauma centers in Iowa\nnemsqar1: First statewide report on all 21 NEMSQA measures in Iowa\nReproducible, interpretable, fast\n\nSimilar trauma/EMS bureaus in Oregon and Connecticut are using nemsqar, along with the quality managers at Dallas Fire and Washington D.C. Fire"
   },
   {
-    "objectID": "useR_2025.html#needs",
-    "href": "useR_2025.html#needs",
-    "title": "Empowering Trauma & EMS Quality Improvement with R",
-    "section": "Needs",
-    "text": "Needs\n\nYou!\nI welcome other developers with expertise in trauma, EMS, epidemiology, and data science to become a collaborator\nI am currently the only developer on the traumar project and there is so much room to grow\nnemsqar has one other developer\nSamuel Kordik: Quality Manager, Dallas Fire, Dallas, TX\nand a contributor\nAlyssa Green, Data Scientist, ESO, Kansas\nPlease reach out. Open source is all about collaboration and we are very open to more contributors."
+    "objectID": "useR_2025.html#join-us",
+    "href": "useR_2025.html#join-us",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Join us",
+    "text": "Join us\n\nOpen source needs more voices!\nTrauma, EMS, epidemiology - R users welcome!\nContributors:\n\nNicolas Foss, Iowa HHS\nSamuel Kordik, Dallas Fire\nAlyssa Green, ESO"
+  },
+  {
+    "objectID": "useR_2025.html#contact",
+    "href": "useR_2025.html#contact",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Contact",
+    "text": "Contact\nNicolas Foss, Ed.D., MS\nEpidemiologist\nBureau of Emergency Medical and Trauma Services\nBureau of Health Statistics\nDivision of Public Health\nIowa Department of Health and Human Services\ne: nicolas.foss at hhs.iowa.gov\nc: 515-985-9627\nGitHub: bemts-hhs\nslides: bemts-hhs/useR_2025"
   }
 ]
