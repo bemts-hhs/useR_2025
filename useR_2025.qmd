@@ -7,7 +7,7 @@ format:
   revealjs:
     footer: "useR! 2025 - Durham, NC"
     logo: theme/HHS_PH_horiz_color_print.jpg
-    incremental: true
+    incremental: false
     transition: slide
     transition-speed: fast
     menu: false
@@ -153,18 +153,19 @@ valid_data <- dplyr::bind_cols(valid_data, data)
 
 ## Example Trauma Data
 
-See the GitHub repo ^[repo at: https://www.github.com/bemts-hhs/useR_2025] for this presentation for how the data were generated.
+See the GitHub repo for this presentation for how the data were generated.
 ```{r seqic-data-check, echo=TRUE}
 
 # Check out the data
 dplyr::glimpse(valid_data)
 ```
-
 --- 
 
 ## Run the SEQIC Indicator 1 Function
 Group the output by verification level and calculate 95% confidence intervals
+
 ```{r run-seqic-1, echo=TRUE}
+
 indicator_1 <- valid_data |> 
   traumar::seqic_indicator_1(
   trauma_team_activation_level = activation_level,
@@ -202,8 +203,8 @@ Here, we will explore `traumar::rm_bin_summary()`
 
 ---
 
-## Run the `traumar::rm_bin_summary()` Function
-No grouping ^[Grouping will make for a massive slide.] and calculate 95% confidence intervals
+## Run `traumar::rm_bin_summary()`
+No grouping and calculate 95% confidence intervals
 
 ```{r run-rmm, echo=TRUE, results='markup'}
 rm_output <- valid_data |> 
@@ -216,10 +217,13 @@ rm_output <- valid_data |>
                           Threshold_1 = 0.8,
                           Threshold_2 = 0.9,
                           seed = 10232015
-                          )
+                          ) |> 
+  dplyr::rename(RMM = population_RMM) |> 
+  dplyr::relocate(RMM, .before = midpoint)
 ```
 
 ---
+
 ## `traumar::rm_bin_summary()` Results!
 
 ```{r rm-output, echo=TRUE, results='markup'}

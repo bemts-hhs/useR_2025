@@ -80,21 +80,19 @@
 // Import Work Sans from Google Fonts
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;800;900&display=swap');
 
-// Font family hierarchy
+// Font hierarchy and weights
 $font-family-sans: 'Work Sans', sans-serif;
-
-// Font weights
 $font-weight-normal: 400;
 $font-weight-bold: 800;
 $font-weight-heavy: 900;
 
-// Color Palette
-$body-color: #4D4D4F;        // dark grey
-$primary: #03617A;           // primary blue
-$secondary: #E0A624;         // primary orange
-$link-color: #19405B;        // accent dark blue
-$code-bg: #B9E1DA;           // accent light blue
-$code-color: #4D4D4F;        // dark grey
+// Colors
+$body-color: #4D4D4F;
+$primary: #03617A;
+$secondary: #E0A624;
+$link-color: #19405B;
+$code-bg: #B9E1DA;
+$code-color: #4D4D4F;
 
 
 // quarto-scss-analysis-annotation { "origin": "Defaults from Quarto's SCSS" }
@@ -2599,13 +2597,12 @@ $presentation-author-block-padding-right: if(
 
   h3, h4, h5, h6 {
     font-weight: $font-weight-normal;
-    color: #C6D667; // primary green
+    color: #C6D667;
   }
 
-  // Slightly smaller font size for body text only
   p, li {
-    font-size: 0.95em;  // adjust between 0.9-0.95 as needed
-    color: $body-color // dark grey color for body text only
+    font-size: 0.9em;
+    color: $body-color;
   }
 
   a {
@@ -2618,15 +2615,30 @@ $presentation-author-block-padding-right: if(
   }
 
   blockquote {
-    border-left: 5px solid #694C5F; // purple
+    border-left: 5px solid #694C5F;
     color: $link-color;
     padding-left: 1em;
   }
 
 .title-slide {
-  background-color: $primary;
-  color: white;
-  text-align: left
+  text-align: left;
+
+  h1, h2, h3, p {
+    text-align: left !important;
+  }
+
+  .subtitle, .quarto-title-author-name, .quarto-title-affiliation, .date {
+    text-align: left !important;
+  }
+}
+
+.slide-logo {
+  height: 50px !important;
+  width: 200px !important;
+  max-width: unset !important;
+  max-height: unset !important;
+  right: auto !important;
+  left: 10px !important /* Adjust left margin as needed */
 }
 
 }
