@@ -1,5 +1,5 @@
 project:
   title: "useR_2025"
-
+  type: website
+  output_dir: _site
 editor: visual
-
