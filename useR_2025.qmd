@@ -1,10 +1,19 @@
 ---
-title: "Empowering Trauma & EMS Quality Improvement with R"
+title: "Empowering Trauma and EMS QI Processes"
+subtitle: "{traumar} and {nemsqar}"
 author: "Nicolas Foss, Ed.D., MS"
 date: "August 10, 2025"
 format:
   revealjs:
-    theme: [simple, theme/theme.scss]
+    footer: "useR! 2025 - Durham, NC"
+    logo: theme/HHS_PH_horiz_color_print.jpg
+    incremental: true
+    transition: slide
+    transition-speed: fast
+    menu: false
+    theme: theme/theme.scss
+    title-slide-attributes:
+      class: title-slide
     slide-number: true
     self-contained: true
     toc: false
@@ -16,74 +25,125 @@ execute:
   message: false
 ---
 
-## {.title-slide}
+## QI Matters to Trauma and EMS Programs
 
-<br><br>
-
-# Empowering Trauma & EMS Quality Improvement with R
-
-<br>
-
-**Dr. Foss**  
-**useR! 2025 — Durham, NC**  
-**August 10, 2025**
-
-<br><br>
-
-
-## Why this work matters
-
-- EMS and trauma systems critically depend on timely, accurate performance data  
-- Hospitals and EMS services often lack analytic infrastructure or staff  
+- EMS and trauma systems critically depend on timely, accurate performance data
 - Most U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry
 - Each hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)
-- National Trauma Data Bank (NTDB) and National EMS Information System (NEMSIS) define strong data standards and naming conventions for data elements
-- Level I, II, and III hospitals report to NTDB, while all EMS service data will be reported to NEMSIS
-- NEMSIS provides national/state/region level performance data, but local implementations for services is hard (many volunteer, low uptake of analytical resources)
-- American College of Surgeons (ACS) Trauma Quality Improvement Program (TQIP) provides some performance data, but not all hospitals report to TQIP (mostly Level I, II, and III programs)
-- EHRs used by hospitals and EMS providers typically provide some analytical resources and reporting software, but this can be inflexible and difficult to use
-- `traumar` and `nemsqar` bring modern R-based QI tools to frontline users
+- Hospitals and EMS services often lack infrastructure for data science and/or staff  
+- EHRs and National repositories for EMS/trauma data provide limited supports for performance calculation
 
 ---
 
 ## Overview: National Context
 
-- **NTDB**: trauma registry data, hospital-based  
-- **NEMSIS**: national EMS data, prehospital events  
-- **NEMSQA**: National EMS Quality Alliance
- - Non-profit, expert EMS stakeholders, consistent measure development process
- - Founded in 2019. In the last 3-4 years, has published 21 measures of EMS service quality for public use
-- **SEQIC**: System Evaluation and Quality Improvement Committee
- - Iowa-based group of trauma stakeholders led by Iowa HHS
- - Over the past two decades, the group has designed multiple QI measures for the Iowa trauma system
-- Consistent element names, standardized formats  
-- Ideal foundation for reproducible QI pipelines
+- **National Trauma Data Bank**: trauma registry data, hospital-based  
+- **National EMS Information System**: national EMS data, prehospital events
+- **NTDB and NEMSIS**: Consistent element names for respective registry types, standardized formats
+- **National EMS Quality Alliance**: National EMS Quality Alliance, expert EMS stakeholders, published 21 EMS service quality measures
+- **SEQIC**: System Evaluation and Quality Improvement Committee, Iowa-based, designed 13 trauma system quality measures
 
 ---
 
 ## Introducing `traumar`
 
 - Implements metrics driven the by academic literature
- - Risk-adjusted mortality metrics
-  - W, M, and Z scores (Based on the Major Trauma Outcomes Study)
-  - Relative mortality metric (RMM) from Napoli et a. (2017)
+  - Risk-adjusted mortality metrics
+    - W, M, and Z scores (Based on the Major Trauma Outcomes Study)
+    - Relative mortality metric (RMM) from Napoli et a. (2017)
 - Built to calculate SEQIC indicators 
-- Friendly to NTDB data formats and others  
-- Calculates measures for Level I, II, III, and IV trauma centers
-- Can perform analyses at multiple levels (i.e. hospital, regional, state)
+- Friendly to NTDB data formats and others
 
 ---
 
-## `traumar`: Example Functions
+## `traumar`: Examples!
+Here, we will explore `traumar::seqic_indicator_1()`
 
-```r
-traumar::seqic_airway_by_year(data)
-traumar::trauma_performance(data)
-traumar::rmm(data)
-traumar::rm_bin_summary(data)
+---
+
+## Example Trauma Data
+
+```{r seqic-data, echo=TRUE}
+# Set a random number seed
+set.seed(10232015)
+
+# Some useful synthetic data
+  valid_data <- tibble::tibble(
+  incident_id = 1:100,
+  activation_level = factor(
+    sample(c("Level 1", "Level 2", "None"), 
+           size = 100, 
+           replace = TRUE, 
+           prob = c(0.8, 0.1, 0.1)
+           )
+    ),
+  provider_type = factor(
+    sample(c("Surgery/Trauma", "Emergency Medicine"), 
+           size = 100, 
+           replace = TRUE
+           )
+    ),
+  trauma_level = factor(
+    sample(c("I", "II", "III", "IV"), 
+           size = 100, 
+           replace = TRUE, 
+           prob = c(0.3, 0.3, 0.2, 0.2)
+           )
+    ),
+  response_minutes = rnorm(100, mean = 8, sd = 5),
+  provider = sample(c("Dr. A", "Dr. B", "Dr. C", "Dr. D"), 
+                    size = 100, 
+                    replace = TRUE
+                    )
+)
+```
+
+--- 
+
+## Example Trauma Data
+
+```{r seqic-data-check, echo=TRUE}
+
+# Check out the data
+dplyr::glimpse(valid_data)
+```
+
+--- 
+
+## Run the Function
+Group the output by verification level and calculate 95% confidence intervals
+```{r run-seqic-1, echo=TRUE}
+indicator_1 <- valid_data |> 
+  traumar::seqic_indicator_1(
+  trauma_team_activation_level = activation_level,
+  trauma_team_physician_service_type = provider_type,
+  level = trauma_level,
+  included_levels = c("I", "II", "III", "IV"),
+  unique_incident_id = incident_id,
+  response_time = response_minutes,
+  trauma_team_activation_provider = provider,
+  groups = "trauma_level",
+  calculate_ci = "wilson"
+) |> 
+  dplyr::select(trauma_level, tidyselect::matches("(?:seqic_|ci_)1[ad]"))
+
 ```
 
 ---
+
+## Results
+
+The output ^[We are just looking at the calculated performance columns and their 95% confidence intervals.
+By default, the `seqic_indicator_*()` functions will also give the numerator and denominator.]! 
+```{r print-seqic-1, echo=TRUE, results='markup'}
+indicator_1 |> 
+  dplyr::mutate(
+    dplyr::across(-1, 
+                  ~ ifelse(!is.na(.), 
+      traumar::pretty_percent(variable = ., n_decimal = 2), NA_real_)))
+```
+
+--- 
 
 ## `nemsqar`: EMS QI with NEMSIS
 
@@ -107,26 +167,22 @@ nemsqar::respiratory_01(data)
 
 ---
 
-## Real-world Use
+## Real-world Impact  
 
-- `traumar`: Used to report risk-adjusted benchmarking and SEQIC indicators for all 120 trauma centers in Iowa
-
-- `nemsqar`: Supporting the first statewide reporting on all NEMSQA measures in Iowa (only a few other states have done this with all 21 measures)
-
+- `traumar`: Risk-adjusted benchmarking + SEQIC indicators for all 120 trauma centers in Iowa
+- `nemsqar`^[Similar trauma/EMS bureaus in Oregon and Connecticut are using `nemsqar`, along with the quality managers at Dallas Fire and Washington D.C. Fire]: First statewide report on all 21 NEMSQA measures in Iowa
 - Reproducible, interpretable, fast
 
 --- 
 
-## Needs
+## Join us
 
-- You!
-- I welcome other developers with expertise in trauma, EMS, epidemiology, and data science to become a collaborator
-- I am currently the only developer on the `traumar` project and there is so much room to grow
-- `nemsqar` has one other developer 
- - Samuel Kordik: Quality Manager, Dallas Fire, Dallas, TX
-- and a contributor 
- - Alyssa Green, Data Scientist, ESO, Kansas
-- Please reach out. Open source is all about collaboration and we are very open to more contributors.
+- Open source needs more voices!
+- Trauma, EMS, epidemiology - R users welcome!
+- Contributors:
+  - Nicolas Foss, Iowa HHS
+  - Samuel Kordik, Dallas Fire
+  - Alyssa Green, ESO
 
 ---
 
@@ -136,7 +192,9 @@ nemsqar::respiratory_01(data)
 
 <h2>Questions?</h2>
 
-<br>
+---
+
+## Contact
 
 **Nicolas Foss, Ed.D., MS**  
 **Epidemiologist**  
@@ -145,4 +203,6 @@ Bureau of Health Statistics
 Division of Public Health  
 Iowa Department of Health and Human Services  
 e: nicolas.foss at hhs.iowa.gov  
-c: 515-985-9627
+c: 515-985-9627  
+GitHub: bemts-hhs  
+slides: bemts-hhs/useR_2025
