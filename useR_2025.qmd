@@ -59,49 +59,101 @@ execute:
 ## `traumar`: Examples!
 Here, we will explore `traumar::seqic_indicator_1()`
 
----
+```{r seqic-data, echo=FALSE}
 
-## Example Trauma Data
+# Total number of patients
+n_patients <- 500
 
-```{r seqic-data, echo=TRUE}
 # Set a random number seed
 set.seed(10232015)
 
 # Some useful synthetic data
   valid_data <- tibble::tibble(
-  incident_id = 1:100,
+  incident_id = 1:n_patients,
   activation_level = factor(
     sample(c("Level 1", "Level 2", "None"), 
-           size = 100, 
+           size = n_patients, 
            replace = TRUE, 
            prob = c(0.8, 0.1, 0.1)
            )
     ),
   provider_type = factor(
     sample(c("Surgery/Trauma", "Emergency Medicine"), 
-           size = 100, 
+           size = n_patients, 
            replace = TRUE
            )
     ),
   trauma_level = factor(
     sample(c("I", "II", "III", "IV"), 
-           size = 100, 
+           size = n_patients, 
            replace = TRUE, 
            prob = c(0.3, 0.3, 0.2, 0.2)
            )
     ),
-  response_minutes = rnorm(100, mean = 8, sd = 5),
+  response_minutes = rnorm(500, mean = 8, sd = 5),
   provider = sample(c("Dr. A", "Dr. B", "Dr. C", "Dr. D"), 
-                    size = 100, 
+                    size = n_patients, 
                     replace = TRUE
                     )
 )
+  
+# Parameters
+
+# Arbitrary group labels
+groups <- sample(x = LETTERS[1:7], size = n_patients, replace = TRUE)
+
+# Trauma types
+trauma_type_values <- sample(
+  x = c("Blunt", "Penetrating"),
+  size = n_patients,
+  replace = TRUE
+)
+
+# RTS values
+rts_values <- sample(
+  x = seq(from = 0, to = 7.8408, by = 0.005),
+  size = n_patients,
+  replace = TRUE
+)
+
+# patient ages
+ages <- sample(
+  x = seq(from = 0, to = 100, by = 1),
+  size = n_patients,
+  replace = TRUE
+)
+
+# ISS scores
+iss_scores <- sample(
+  x = seq(from = 0, to = 75, by = 1),
+  size = n_patients,
+  replace = TRUE
+)
+
+# Generate survival probabilities (Ps)
+Ps <- traumar::probability_of_survival(
+  trauma_type = trauma_type_values,
+  age = ages,
+  rts = rts_values,
+  iss = iss_scores
+)
+
+# Simulate survival outcomes based on Ps
+survival_outcomes <- rbinom(n_patients, size = 1, prob = Ps)
+
+# Create data frame
+data <- data.frame(Ps = Ps, survival = survival_outcomes, groups = groups) |>
+  dplyr::mutate(death = dplyr::if_else(survival == 1, 0, 1))
+
+# final data
+valid_data <- dplyr::bind_cols(valid_data, data)
 ```
 
 --- 
 
 ## Example Trauma Data
 
+See the GitHub repo ^[repo at: https://www.github.com/bemts-hhs/useR_2025] for this presentation for how the data were generated.
 ```{r seqic-data-check, echo=TRUE}
 
 # Check out the data
@@ -110,7 +162,7 @@ dplyr::glimpse(valid_data)
 
 --- 
 
-## Run the Function
+## Run the SEQIC Indicator 1 Function
 Group the output by verification level and calculate 95% confidence intervals
 ```{r run-seqic-1, echo=TRUE}
 indicator_1 <- valid_data |> 
@@ -133,7 +185,7 @@ indicator_1 <- valid_data |>
 
 ## Results
 
-The output ^[We are just looking at the calculated performance columns and their 95% confidence intervals.
+The output ^[We are just looking at the calculated performance columns for Indicators 1a and 1d and their 95% confidence intervals.
 By default, the `seqic_indicator_*()` functions will also give the numerator and denominator.]! 
 ```{r print-seqic-1, echo=TRUE, results='markup'}
 indicator_1 |> 
@@ -144,6 +196,37 @@ indicator_1 |>
 ```
 
 --- 
+
+## `traumar`: Examples!
+Here, we will explore `traumar::rm_bin_summary()`
+
+---
+
+## Run the `traumar::rm_bin_summary()` Function
+No grouping ^[Grouping will make for a massive slide.] and calculate 95% confidence intervals
+
+```{r run-rmm, echo=TRUE, results='markup'}
+rm_output <- valid_data |> 
+  traumar::rm_bin_summary(Ps_col = Ps,
+                          outcome_col = survival,
+                          group_vars = NULL,
+                          n_samples = 100,
+                          Divisor1 = 3,
+                          Divisor2 = 3,
+                          Threshold_1 = 0.8,
+                          Threshold_2 = 0.9,
+                          seed = 10232015
+                          )
+```
+
+---
+## `traumar::rm_bin_summary()` Results!
+
+```{r rm-output, echo=TRUE, results='markup'}
+rm_output
+```
+
+---
 
 ## `nemsqar`: EMS QI with NEMSIS
 
