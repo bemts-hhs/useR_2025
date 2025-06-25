@@ -1,0 +1,148 @@
+---
+title: "Empowering Trauma & EMS Quality Improvement with R"
+author: "Nicolas Foss, Ed.D., MS"
+date: "August 10, 2025"
+format:
+  revealjs:
+    theme: [simple, theme/theme.scss]
+    slide-number: true
+    self-contained: true
+    toc: false
+    code-overflow: wrap
+    notes: true
+execute: 
+  echo: true
+  warning: false
+  message: false
+---
+
+## {.title-slide}
+
+<br><br>
+
+# Empowering Trauma & EMS Quality Improvement with R
+
+<br>
+
+**Dr. Foss**  
+**useR! 2025 — Durham, NC**  
+**August 10, 2025**
+
+<br><br>
+
+
+## Why this work matters
+
+- EMS and trauma systems critically depend on timely, accurate performance data  
+- Hospitals and EMS services often lack analytic infrastructure or staff  
+- Most U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry
+- Each hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)
+- National Trauma Data Bank (NTDB) and National EMS Information System (NEMSIS) define strong data standards and naming conventions for data elements
+- Level I, II, and III hospitals report to NTDB, while all EMS service data will be reported to NEMSIS
+- NEMSIS provides national/state/region level performance data, but local implementations for services is hard (many volunteer, low uptake of analytical resources)
+- American College of Surgeons (ACS) Trauma Quality Improvement Program (TQIP) provides some performance data, but not all hospitals report to TQIP (mostly Level I, II, and III programs)
+- EHRs used by hospitals and EMS providers typically provide some analytical resources and reporting software, but this can be inflexible and difficult to use
+- `traumar` and `nemsqar` bring modern R-based QI tools to frontline users
+
+---
+
+## Overview: National Context
+
+- **NTDB**: trauma registry data, hospital-based  
+- **NEMSIS**: national EMS data, prehospital events  
+- **NEMSQA**: National EMS Quality Alliance
+ - Non-profit, expert EMS stakeholders, consistent measure development process
+ - Founded in 2019. In the last 3-4 years, has published 21 measures of EMS service quality for public use
+- **SEQIC**: System Evaluation and Quality Improvement Committee
+ - Iowa-based group of trauma stakeholders led by Iowa HHS
+ - Over the past two decades, the group has designed multiple QI measures for the Iowa trauma system
+- Consistent element names, standardized formats  
+- Ideal foundation for reproducible QI pipelines
+
+---
+
+## Introducing `traumar`
+
+- Implements metrics driven the by academic literature
+ - Risk-adjusted mortality metrics
+  - W, M, and Z scores (Based on the Major Trauma Outcomes Study)
+  - Relative mortality metric (RMM) from Napoli et a. (2017)
+- Built to calculate SEQIC indicators 
+- Friendly to NTDB data formats and others  
+- Calculates measures for Level I, II, III, and IV trauma centers
+- Can perform analyses at multiple levels (i.e. hospital, regional, state)
+
+---
+
+## `traumar`: Example Functions
+
+```r
+traumar::seqic_airway_by_year(data)
+traumar::trauma_performance(data)
+traumar::rmm(data)
+traumar::rm_bin_summary(data)
+```
+
+---
+
+## `nemsqar`: EMS QI with NEMSIS
+
+- Built on NEMSQA performance measures
+- Automatically detects and validates key elements
+- Scales to full state-level EMS datasets
+
+---
+
+## `nemsqar`: Example Functions
+
+```r
+nemsqar::adult_population(data)
+nemsqar::trauma_population(data)
+nemsqar::respiratory_01(data)
+
+```
+
+- `*_population()` functions define eligible cases
+- Wrapper functions implement full NEMSQA measures
+
+---
+
+## Real-world Use
+
+- `traumar`: Used to report risk-adjusted benchmarking and SEQIC indicators for all 120 trauma centers in Iowa
+
+- `nemsqar`: Supporting the first statewide reporting on all NEMSQA measures in Iowa (only a few other states have done this with all 21 measures)
+
+- Reproducible, interpretable, fast
+
+--- 
+
+## Needs
+
+- You!
+- I welcome other developers with expertise in trauma, EMS, epidemiology, and data science to become a collaborator
+- I am currently the only developer on the `traumar` project and there is so much room to grow
+- `nemsqar` has one other developer 
+ - Samuel Kordik: Quality Manager, Dallas Fire, Dallas, TX
+- and a contributor 
+ - Alyssa Green, Data Scientist, ESO, Kansas
+- Please reach out. Open source is all about collaboration and we are very open to more contributors.
+
+---
+
+<h1>Thank you!</h1>
+
+<br>
+
+<h2>Questions?</h2>
+
+<br>
+
+**Nicolas Foss, Ed.D., MS**  
+**Epidemiologist**  
+Bureau of Emergency Medical and Trauma Services  
+Bureau of Health Statistics  
+Division of Public Health  
+Iowa Department of Health and Human Services  
+e: nicolas.foss at hhs.iowa.gov  
+c: 515-985-9627
