@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "useR_2025.html#why-this-work-matters",
+    "href": "useR_2025.html#why-this-work-matters",
+    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "section": "Why this work matters",
+    "text": "Why this work matters\n\nEMS and trauma systems critically depend on timely, accurate performance data\n\nHospitals and EMS services often lack analytic infrastructure or staff\n\nMost U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry\nEach hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)\nNational Trauma Data Bank (NTDB) and National EMS Information System (NEMSIS) define strong data standards and naming conventions for data elements\nLevel I, II, and III hospitals report to NTDB, while all EMS service data will be reported to NEMSIS\nNEMSIS provides national/state/region level performance data, but local implementations for services is hard (many volunteer, low uptake of analytical resources)\nAmerican College of Surgeons (ACS) Trauma Quality Improvement Program (TQIP) provides some performance data, but not all hospitals report to TQIP (mostly Level I, II, and III programs)\nEHRs used by hospitals and EMS providers typically provide some analytical resources and reporting software, but this can be inflexible and difficult to use\ntraumar and nemsqar bring modern R-based QI tools to frontline users"
+  },
+  {
+    "objectID": "useR_2025.html#overview-national-context",
+    "href": "useR_2025.html#overview-national-context",
+    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "section": "Overview: National Context",
+    "text": "Overview: National Context\n\nNTDB: trauma registry data, hospital-based\n\nNEMSIS: national EMS data, prehospital events\n\nNEMSQA: National EMS Quality Alliance\nNon-profit, expert EMS stakeholders, consistent measure development process\nFounded in 2019. In the last 3-4 years, has published 21 measures of EMS service quality for public use\nSEQIC: System Evaluation and Quality Improvement Committee\nIowa-based group of trauma stakeholders led by Iowa HHS\nOver the past two decades, the group has designed multiple QI measures for the Iowa trauma system\nConsistent element names, standardized formats\n\nIdeal foundation for reproducible QI pipelines"
+  },
+  {
+    "objectID": "useR_2025.html#introducing-traumar",
+    "href": "useR_2025.html#introducing-traumar",
+    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "section": "Introducing traumar",
+    "text": "Introducing traumar\n\nImplements metrics driven the by academic literature\nRisk-adjusted mortality metrics\nW, M, and Z scores (Based on the Major Trauma Outcomes Study)\nRelative mortality metric (RMM) from Napoli et a. (2017)\nBuilt to calculate SEQIC indicators\nFriendly to NTDB data formats and others\n\nCalculates measures for Level I, II, III, and IV trauma centers\nCan perform analyses at multiple levels (i.e. hospital, regional, state)"
+  },
+  {
+    "objectID": "useR_2025.html#traumar-example-functions",
+    "href": "useR_2025.html#traumar-example-functions",
+    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "section": "traumar: Example Functions",
+    "text": "traumar: Example Functions\ntraumar::seqic_airway_by_year(data)\ntraumar::trauma_performance(data)\ntraumar::rmm(data)\ntraumar::rm_bin_summary(data)"
+  },
+  {
+    "objectID": "useR_2025.html#nemsqar-ems-qi-with-nemsis",
+    "href": "useR_2025.html#nemsqar-ems-qi-with-nemsis",
+    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "section": "nemsqar: EMS QI with NEMSIS",
+    "text": "nemsqar: EMS QI with NEMSIS\n\nBuilt on NEMSQA performance measures\nAutomatically detects and validates key elements\nScales to full state-level EMS datasets"
+  },
+  {
+    "objectID": "useR_2025.html#nemsqar-example-functions",
+    "href": "useR_2025.html#nemsqar-example-functions",
+    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "section": "nemsqar: Example Functions",
+    "text": "nemsqar: Example Functions\nnemsqar::adult_population(data)\nnemsqar::trauma_population(data)\nnemsqar::respiratory_01(data)\n\n*_population() functions define eligible cases\nWrapper functions implement full NEMSQA measures"
+  },
+  {
+    "objectID": "useR_2025.html#real-world-use",
+    "href": "useR_2025.html#real-world-use",
+    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "section": "Real-world Use",
+    "text": "Real-world Use\n\ntraumar: Used to report risk-adjusted benchmarking and SEQIC indicators for all 120 trauma centers in Iowa\nnemsqar: Supporting the first statewide reporting on all NEMSQA measures in Iowa (only a few other states have done this with all 21 measures)\nReproducible, interpretable, fast"
+  },
+  {
+    "objectID": "useR_2025.html#needs",
+    "href": "useR_2025.html#needs",
+    "title": "Empowering Trauma & EMS Quality Improvement with R",
+    "section": "Needs",
+    "text": "Needs\n\nYou!\nI welcome other developers with expertise in trauma, EMS, epidemiology, and data science to become a collaborator\nI am currently the only developer on the traumar project and there is so much room to grow\nnemsqar has one other developer\nSamuel Kordik: Quality Manager, Dallas Fire, Dallas, TX\nand a contributor\nAlyssa Green, Data Scientist, ESO, Kansas\nPlease reach out. Open source is all about collaboration and we are very open to more contributors."
+  }
+]
