@@ -1,17 +1,17 @@
 [
   {
-    "objectID": "useR_2025.html#qi-matters-to-trauma-and-ems-programs",
-    "href": "useR_2025.html#qi-matters-to-trauma-and-ems-programs",
+    "objectID": "useR_2025.html#qi-matters",
+    "href": "useR_2025.html#qi-matters",
     "title": "Empowering Trauma and EMS QI Processes",
-    "section": "QI Matters to Trauma and EMS Programs",
-    "text": "QI Matters to Trauma and EMS Programs\n\nEMS and trauma systems critically depend on timely, accurate performance data\nMost U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry\nEach hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)\nHospitals and EMS services often lack infrastructure for data science and/or staff\n\nEHRs and National repositories for EMS/trauma data provide limited supports for performance calculation"
+    "section": "QI Matters",
+    "text": "QI Matters\n\nEMS and trauma systems critically depend on timely, accurate performance data\nMost U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry\nEach hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)\nHospitals and EMS services often lack infrastructure for data science and/or staff\n\nEHRs and National repositories for EMS/trauma data provide limited supports for performance calculation"
   },
   {
     "objectID": "useR_2025.html#overview-national-context",
     "href": "useR_2025.html#overview-national-context",
     "title": "Empowering Trauma and EMS QI Processes",
     "section": "Overview: National Context",
-    "text": "Overview: National Context\n\nNational Trauma Data Bank: trauma registry data, hospital-based\n\nNational EMS Information System: national EMS data, prehospital events\nNTDB and NEMSIS: Consistent element names for respective registry types, standardized formats\nNational EMS Quality Alliance: National EMS Quality Alliance, expert EMS stakeholders, published 21 EMS service quality measures\nSEQIC: System Evaluation and Quality Improvement Committee, Iowa-based, designed 13 trauma system quality measures"
+    "text": "Overview: National Context\n\nNational Trauma Data Bank: trauma registry data\nNational EMS Information System: national EMS data\nNTDB and NEMSIS: Consistent element names for respective registry types, standardized formats\nNational EMS Quality Alliance: National EMS Quality Alliance, expert EMS stakeholders, published 21 EMS service quality measures\nSEQIC: System Evaluation and Quality Improvement Committee, Iowa-based, designed 13 trauma system quality measures"
   },
   {
     "objectID": "useR_2025.html#introducing-traumar",
