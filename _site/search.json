@@ -74,21 +74,63 @@
     "href": "useR_2025.html#nemsqar-ems-qi-with-nemsis",
     "title": "Empowering Trauma and EMS QI Processes",
     "section": "nemsqar: EMS QI with NEMSIS",
-    "text": "nemsqar: EMS QI with NEMSIS\n\nBuilt on NEMSQA performance measures\nAutomatically detects and validates key elements\nScales to full state-level EMS datasets"
+    "text": "nemsqar: EMS QI with NEMSIS\n\nBuilt on NEMSQA performance measures\nFollows the NEMSIS data standard\n\nWill work a data source as a single data.frame containing all needed elements, or multiple ‘table’ arguments\nUsing the table arguments is preferred as NEMSIS tables are typically set up using the star schema format on a SQL server of some kind\n\nScales to full state-level EMS datasets"
   },
   {
-    "objectID": "useR_2025.html#nemsqar-example-functions",
-    "href": "useR_2025.html#nemsqar-example-functions",
+    "objectID": "useR_2025.html#lets-explore-nemsqar",
+    "href": "useR_2025.html#lets-explore-nemsqar",
     "title": "Empowering Trauma and EMS QI Processes",
-    "section": "nemsqar: Example Functions",
-    "text": "nemsqar: Example Functions\nnemsqar::adult_population(data)\nnemsqar::trauma_population(data)\nnemsqar::respiratory_01(data)\n\n*_population() functions define eligible cases\nWrapper functions implement full NEMSQA measures"
+    "section": "Let’s Explore nemsqar",
+    "text": "Let’s Explore nemsqar\nA look at some EMS-like data\n\nems_data |&gt; dplyr::glimpse()\n\nRows: 500\nColumns: 10\n$ erecord_01      &lt;chr&gt; \"R001\", \"R002\", \"R003\", \"R004\", \"R005\", \"R006\", \"R007\"…\n$ patient_dob     &lt;date&gt; 2018-12-13, 1995-12-13, 1991-07-01, 1954-01-30, 2020-…\n$ incident_date   &lt;date&gt; 2025-01-10, 2025-05-04, 2025-03-08, 2025-04-11, 2025-…\n$ epatient_15     &lt;int&gt; 6, 29, 33, 71, 4, 63, 49, 58, 75, 35, 28, 30, 71, 40, …\n$ epatient_16     &lt;chr&gt; \"Years\", \"Years\", \"Years\", \"Years\", \"Years\", \"Years\", …\n$ eresponse_05    &lt;dbl&gt; 2205009, 2205009, 2205001, 2205009, 2301001, 2205003, …\n$ emedications_03 &lt;chr&gt; \"Contraindication Noted\", \"Nitroglycerin\", \"Nitroglyce…\n$ eprocedures_03  &lt;chr&gt; \"Unable to Complete\", \"CPAP\", \"Oxygen Therapy\", \"Refus…\n$ evitals_12      &lt;int&gt; 74, 85, 81, 78, 71, 78, 97, 70, 94, 84, 94, 94, 67, 64…\n$ county          &lt;chr&gt; \"B\", \"C\", \"A\", \"C\", \"A\", \"C\", \"C\", \"A\", \"B\", \"C\", \"C\",…"
+  },
+  {
+    "objectID": "useR_2025.html#nemsqar-two-kinds-of-fun",
+    "href": "useR_2025.html#nemsqar-two-kinds-of-fun",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "nemsqar: Two Kinds of Fun",
+    "text": "nemsqar: Two Kinds of Fun\n\n*_population() functions define eligible cases (e.g. respiratory_02_population())\n\nReturn a list of tibbles with the columns passed to the function plus new columns used in calculations\n\nWrapper functions implement full NEMSQA measures (e.g. respiratory_02())"
+  },
+  {
+    "objectID": "useR_2025.html#explore-respiratory_02_population",
+    "href": "useR_2025.html#explore-respiratory_02_population",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Explore respiratory_02_population()",
+    "text": "Explore respiratory_02_population()\nThis function will gather the records we need to calculate performance on Respiratory-02:\n\n# Get the list object as output\nresp_out &lt;- ems_data |&gt; \n  nemsqar::respiratory_02_population(erecord_01_col = erecord_01,\n                                     incident_date_col = incident_date,\n                                     patient_DOB_col = patient_dob,\n                                     epatient_15_col = epatient_15,\n                                     epatient_16_col = epatient_16,\n                                     eresponse_05_col = eresponse_05,\n                                     evitals_12_col = evitals_12,\n                                     emedications_03_col = emedications_03,\n                                     eprocedures_03_col = eprocedures_03\n                                     )\n\n\n\nWe hope to add data on missing values to the filter_process output, soon!"
+  },
+  {
+    "objectID": "useR_2025.html#list-output-of-a-population-function",
+    "href": "useR_2025.html#list-output-of-a-population-function",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "List Output of a Population Function",
+    "text": "List Output of a Population Function\n\n# Examine resp_out's contents\nsummary(resp_out)\n\n                     Length Class  Mode\nfilter_process        2     tbl_df list\nadults               22     tbl_df list\npeds                 22     tbl_df list\ninitial_population   22     tbl_df list\ncomputing_population 22     tbl_df list"
+  },
+  {
+    "objectID": "useR_2025.html#the-filter_process-object-output",
+    "href": "useR_2025.html#the-filter_process-object-output",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "The filter_process object output",
+    "text": "The filter_process object output\nAs you can see, we get a nice tibble of counts we can use for reporting, and as a kind of ‘sanity check’ of our data\n\nresp_out |&gt; purrr::pluck(1)\n\n# A tibble: 8 × 2\n  filter                   count\n  &lt;chr&gt;                    &lt;int&gt;\n1 Oxygen given as med         97\n2 Oxygen therapy procedure   106\n3 Pulse oximetry &lt; 90        373\n4 911 calls                  293\n5 Adults denominator         170\n6 Peds denominator            58\n7 Initial population         228\n8 Total dataset              500"
+  },
+  {
+    "objectID": "useR_2025.html#nemsqa-respiratory-02",
+    "href": "useR_2025.html#nemsqa-respiratory-02",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "NEMSQA Respiratory-02",
+    "text": "NEMSQA Respiratory-02\nWhat proportion of patients with hypoxia had oxygen administered?\n\nresp_02 &lt;- ems_data |&gt; \n  nemsqar::respiratory_02(erecord_01_col = erecord_01,\n                                     incident_date_col = incident_date,\n                                     patient_DOB_col = patient_dob,\n                                     epatient_15_col = epatient_15,\n                                     epatient_16_col = epatient_16,\n                                     eresponse_05_col = eresponse_05,\n                                     evitals_12_col = evitals_12,\n                                     emedications_03_col = emedications_03,\n                                     eprocedures_03_col = eprocedures_03,\n                                     confidence_interval = TRUE,\n                                     method = \"wilson\",\n                                     conf.level = 0.95,\n                                     correct = TRUE,\n                                     .by = county\n                                     )"
+  },
+  {
+    "objectID": "useR_2025.html#respiratory-02-results",
+    "href": "useR_2025.html#respiratory-02-results",
+    "title": "Empowering Trauma and EMS QI Processes",
+    "section": "Respiratory-02 Results",
+    "text": "Respiratory-02 Results\nFrom our sample of three counties in a target state, we can understand EMS performance on this measure.\n\nresp_02 |&gt; dplyr::arrange(county)\n\n# A tibble: 9 × 9\n  county measure  pop   numerator denominator  prop prop_label lower_ci upper_ci\n  &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;     &lt;int&gt;       &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;\n1 A      Respira… Adul…        19          56 0.339 33.93%        0.222    0.479\n2 A      Respira… Peds          6          18 0.333 33.33%        0.144    0.588\n3 A      Respira… All          25          74 0.338 33.78%        0.235    0.458\n4 B      Respira… Adul…        18          50 0.36  36%           0.233    0.509\n5 B      Respira… Peds          9          20 0.45  45%           0.238    0.680\n6 B      Respira… All          27          70 0.386 38.57%        0.274    0.510\n7 C      Respira… Adul…        17          64 0.266 26.56%        0.167    0.393\n8 C      Respira… Peds         10          20 0.5   50%           0.299    0.701\n9 C      Respira… All          27          84 0.321 32.14%        0.226    0.433"
   },
   {
     "objectID": "useR_2025.html#real-world-impact",
     "href": "useR_2025.html#real-world-impact",
     "title": "Empowering Trauma and EMS QI Processes",
     "section": "Real-world Impact",
-    "text": "Real-world Impact\n\ntraumar: Risk-adjusted benchmarking + SEQIC indicators for all 120 trauma centers in Iowa\nnemsqar1: First statewide report on all 21 NEMSQA measures in Iowa\nReproducible, interpretable, fast\n\nSimilar trauma/EMS bureaus in Oregon and Connecticut are using nemsqar, along with the quality managers at Dallas Fire and Washington D.C. Fire"
+    "text": "Real-world Impact\n\ntraumar: Risk-adjusted benchmarking + SEQIC indicators for all 120 trauma centers in Iowa\n\nProject and examples: https://github.com/bemts-hhs/SEQIC-Report-Distribution-2025\n\nnemsqar1: First statewide report on all 21 NEMSQA measures in Iowa\n\nProject and examples: https://github.com/bemts-hhs/NEMSQA-Report-2025\n\nReproducible, interpretable, fast\n\nSimilar trauma/EMS bureaus in Oregon and Connecticut are using nemsqar, along with the quality managers at Dallas Fire and Washington D.C. Fire"
   },
   {
     "objectID": "useR_2025.html#join-us",
@@ -102,6 +144,6 @@
     "href": "useR_2025.html#contact",
     "title": "Empowering Trauma and EMS QI Processes",
     "section": "Contact",
-    "text": "Contact\nNicolas Foss, Ed.D., MS\nEpidemiologist\nBureau of Emergency Medical and Trauma Services\nBureau of Health Statistics\nDivision of Public Health\nIowa Department of Health and Human Services\ne: nicolas.foss at hhs.iowa.gov\nc: 515-985-9627\nGitHub: bemts-hhs\nslides: bemts-hhs/useR_2025"
+    "text": "Contact\nNicolas Foss, Ed.D., MS\nEpidemiologist\nBureau of Emergency Medical and Trauma Services\nBureau of Health Statistics\nDivision of Public Health\nIowa Department of Health and Human Services\n nicolas.foss at hhs.iowa.gov\n 515-985-9627\n bemts-hhs\n bemts-hhs/useR_2025"
   }
 ]

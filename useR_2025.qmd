@@ -10,7 +10,7 @@ format:
     incremental: false
     transition: slide
     transition-speed: fast
-    menu: false
+    menu: true
     theme: theme/theme.scss
     title-slide-attributes:
       class: title-slide
@@ -159,7 +159,6 @@ See the GitHub repo for this presentation for how the data were generated.
 # Check out the data
 dplyr::glimpse(valid_data)
 ```
---- 
 
 ## Run the SEQIC Indicator 1 Function
 Group the output by verification level and calculate 95% confidence intervals
@@ -235,29 +234,164 @@ rm_output
 ## `nemsqar`: EMS QI with NEMSIS
 
 - Built on NEMSQA performance measures
-- Automatically detects and validates key elements
+- Follows the NEMSIS data standard
+  - Will work a data source as a single data.frame containing all needed elements, or multiple 'table' arguments
+  - Using the table arguments is preferred as NEMSIS tables are typically set up using the star schema format on a SQL server of some kind
 - Scales to full state-level EMS datasets
 
 ---
 
-## `nemsqar`: Example Functions
+```{r nemsqa-data, echo=FALSE}
+# Set the random number seed
+set.seed(10232015)
 
-```r
-nemsqar::adult_population(data)
-nemsqar::trauma_population(data)
-nemsqar::respiratory_01(data)
+# Use 500 patients
+n <- 500
+
+# Get the record IDs dynamically
+erecord_ids <- sprintf("R%03d", 1:n)
+
+# Patient info
+patient_dob <- as.Date("1950-01-01") + sample(0:27000, n, replace = TRUE)
+incident_date <- as.Date("2025-06-25") - sample(0:180, n, replace = TRUE)
+epatient_15 <- as.integer(floor(as.numeric(difftime(incident_date, patient_dob, units = "days")) / 365.25))
+
+# Response
+response_codes <- c(2205001, 2205003, 2205009, 2205007, 2301001)
+eresponse_05 <- sample(response_codes, n, replace = TRUE)
+
+# Medications
+med_values <- c("Oxygen", "Albuterol", "Contraindication Noted", "Refused", "Nitroglycerin")
+emedications_03 <- sample(med_values, n, replace = TRUE)
+
+# Procedures
+proc_values <- c("Oxygen Therapy", "CPAP", "Refused", "Unable to Complete", "IV Start")
+eprocedures_03 <- sample(proc_values, n, replace = TRUE)
+
+# Vitals
+evitals_12 <- sample(70:99, n, replace = TRUE)
+evitals_12 <- dplyr::if_else(runif(n) < 0.2, sample(60:89, n, replace = TRUE), evitals_12)
+
+# An arbitrary grouping variable
+county <- sample(LETTERS[1:3], size = n, replace = TRUE)
+
+# Final combined dataset
+ems_data <- tibble::tibble(
+  erecord_01 = erecord_ids,
+  patient_dob = patient_dob,
+  incident_date = incident_date,
+  epatient_15 = epatient_15,
+  epatient_16 = "Years",
+  eresponse_05 = eresponse_05,
+  emedications_03 = emedications_03,
+  eprocedures_03 = eprocedures_03,
+  evitals_12 = evitals_12,
+  county = county
+)
+
 
 ```
 
-- `*_population()` functions define eligible cases
-- Wrapper functions implement full NEMSQA measures
+## Let's Explore `nemsqar`
+
+A look at some EMS-like data
+
+```{r print-ems-data, echo=TRUE}
+ems_data |> dplyr::glimpse()
+```
+
+---
+
+## `nemsqar`: Two Kinds of Fun
+
+- `*_population()` functions define eligible cases (e.g. `respiratory_02_population()`)
+  - Return a list of tibbles with the columns passed to the function plus new columns used in calculations
+- Wrapper functions implement full NEMSQA measures (e.g. `respiratory_02()`)
+
+---
+
+## Explore the Respiratory-02 Population Function
+
+This function will gather the records we need to calculate performance on Respiratory-02:
+```{r respiratory-02-pop, echo=TRUE, results='markup'}
+# Get the list object as output
+resp_out <- ems_data |> 
+  nemsqar::respiratory_02_population(erecord_01_col = erecord_01,
+                                     incident_date_col = incident_date,
+                                     patient_DOB_col = patient_dob,
+                                     epatient_15_col = epatient_15,
+                                     epatient_16_col = epatient_16,
+                                     eresponse_05_col = eresponse_05,
+                                     evitals_12_col = evitals_12,
+                                     emedications_03_col = emedications_03,
+                                     eprocedures_03_col = eprocedures_03
+                                     )
+
+
+
+```
+
+::: aside
+We hope to add data on missing values to the `filter_process` output, soon!
+:::
+
+---
+
+## List Output of a Population Function
+
+```{r list-output, echo=TRUE, results=TRUE}
+# Examine resp_out's contents
+summary(resp_out)
+```
+
+---
+
+## The `filter_process` object output
+As you can see, we get a nice tibble of counts we can use for reporting, and as a kind of 'sanity check' of our data
+```{r filter-process, echo=TRUE, results='markup'}
+resp_out |> purrr::pluck(1)
+```
+
+---
+
+## NEMSQA Respiratory-02
+What proportion of patients with hypoxia had oxygen administered?
+
+```{r run-respiratory-02, echo=TRUE, results='markup'}
+resp_02 <- ems_data |> 
+  nemsqar::respiratory_02(erecord_01_col = erecord_01,
+                                     incident_date_col = incident_date,
+                                     patient_DOB_col = patient_dob,
+                                     epatient_15_col = epatient_15,
+                                     epatient_16_col = epatient_16,
+                                     eresponse_05_col = eresponse_05,
+                                     evitals_12_col = evitals_12,
+                                     emedications_03_col = emedications_03,
+                                     eprocedures_03_col = eprocedures_03,
+                                     confidence_interval = TRUE,
+                                     method = "wilson",
+                                     conf.level = 0.95,
+                                     correct = TRUE,
+                                     .by = county
+                                     )
+```
+
+---
+
+## Respiratory-02 Results
+From our sample of three counties in a target state, we can understand EMS performance on this measure.
+```{r resp-02-results, echo=TRUE, results='markup'}
+resp_02 |> dplyr::arrange(county)
+```
 
 ---
 
 ## Real-world Impact  
 
 - `traumar`: Risk-adjusted benchmarking + SEQIC indicators for all 120 trauma centers in Iowa
+  - Project and examples: https://github.com/bemts-hhs/SEQIC-Report-Distribution-2025
 - `nemsqar`^[Similar trauma/EMS bureaus in Oregon and Connecticut are using `nemsqar`, along with the quality managers at Dallas Fire and Washington D.C. Fire]: First statewide report on all 21 NEMSQA measures in Iowa
+  - Project and examples: https://github.com/bemts-hhs/NEMSQA-Report-2025
 - Reproducible, interpretable, fast
 
 --- 
@@ -289,7 +423,7 @@ Bureau of Emergency Medical and Trauma Services
 Bureau of Health Statistics  
 Division of Public Health  
 Iowa Department of Health and Human Services  
-e: nicolas.foss at hhs.iowa.gov  
-c: 515-985-9627  
-GitHub: bemts-hhs  
-slides: bemts-hhs/useR_2025
+{{< fa paper-plane >}} nicolas.foss at hhs.iowa.gov  
+{{< fa mobile-retro >}} 515-985-9627  
+{{< fa brands github >}} bemts-hhs  
+{{< fa file-code >}} bemts-hhs/useR_2025
