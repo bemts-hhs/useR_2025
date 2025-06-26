@@ -25,7 +25,7 @@ execute:
   message: false
 ---
 
-## QI Matters to Trauma and EMS Programs
+## QI Matters
 
 - EMS and trauma systems critically depend on timely, accurate performance data
 - Most U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry
@@ -37,8 +37,8 @@ execute:
 
 ## Overview: National Context
 
-- **National Trauma Data Bank**: trauma registry data, hospital-based  
-- **National EMS Information System**: national EMS data, prehospital events
+- **National Trauma Data Bank**: trauma registry data
+- **National EMS Information System**: national EMS data
 - **NTDB and NEMSIS**: Consistent element names for respective registry types, standardized formats
 - **National EMS Quality Alliance**: National EMS Quality Alliance, expert EMS stakeholders, published 21 EMS service quality measures
 - **SEQIC**: System Evaluation and Quality Improvement Committee, Iowa-based, designed 13 trauma system quality measures
