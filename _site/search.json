@@ -1,17 +1,17 @@
 [
   {
-    "objectID": "useR_2025.html#qi-matters-to-trauma-and-ems-programs",
-    "href": "useR_2025.html#qi-matters-to-trauma-and-ems-programs",
+    "objectID": "useR_2025.html#qi-matters",
+    "href": "useR_2025.html#qi-matters",
     "title": "Empowering Trauma and EMS QI Processes",
-    "section": "QI Matters to Trauma and EMS Programs",
-    "text": "QI Matters to Trauma and EMS Programs\n\nEMS and trauma systems critically depend on timely, accurate performance data\nMost U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry\nEach hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)\nHospitals and EMS services often lack infrastructure for data science and/or staff\n\nEHRs and National repositories for EMS/trauma data provide limited supports for performance calculation"
+    "section": "QI Matters",
+    "text": "QI Matters\n\nEMS and trauma systems critically depend on timely, accurate performance data\nMost U.S. jurisdictions require reporting to a centralized trauma registry and EMS registry\nEach hospital and EMS service have access to their own raw data via their Electronic Health Record (EHR)\nHospitals and EMS services often lack infrastructure for data science and/or staff\n\nEHRs and National repositories for EMS/trauma data provide limited supports for performance calculation"
   },
   {
     "objectID": "useR_2025.html#overview-national-context",
     "href": "useR_2025.html#overview-national-context",
     "title": "Empowering Trauma and EMS QI Processes",
     "section": "Overview: National Context",
-    "text": "Overview: National Context\n\nNational Trauma Data Bank: trauma registry data, hospital-based\n\nNational EMS Information System: national EMS data, prehospital events\nNTDB and NEMSIS: Consistent element names for respective registry types, standardized formats\nNational EMS Quality Alliance: National EMS Quality Alliance, expert EMS stakeholders, published 21 EMS service quality measures\nSEQIC: System Evaluation and Quality Improvement Committee, Iowa-based, designed 13 trauma system quality measures"
+    "text": "Overview: National Context\n\nNational Trauma Data Bank: trauma registry data\nNational EMS Information System: national EMS data\nNTDB and NEMSIS: Consistent element names for respective registry types, standardized formats\nNational EMS Quality Alliance: National EMS Quality Alliance, expert EMS stakeholders, published 21 EMS service quality measures\nSEQIC: System Evaluation and Quality Improvement Committee, Iowa-based, designed 13 trauma system quality measures"
   },
   {
     "objectID": "useR_2025.html#introducing-traumar",
@@ -91,11 +91,11 @@
     "text": "nemsqar: Two Kinds of Fun\n\n*_population() functions define eligible cases (e.g. respiratory_02_population())\n\nReturn a list of tibbles with the columns passed to the function plus new columns used in calculations\n\nWrapper functions implement full NEMSQA measures (e.g. respiratory_02())"
   },
   {
-    "objectID": "useR_2025.html#explore-respiratory_02_population",
-    "href": "useR_2025.html#explore-respiratory_02_population",
+    "objectID": "useR_2025.html#explore-the-respiratory-02-population-function",
+    "href": "useR_2025.html#explore-the-respiratory-02-population-function",
     "title": "Empowering Trauma and EMS QI Processes",
-    "section": "Explore respiratory_02_population()",
-    "text": "Explore respiratory_02_population()\nThis function will gather the records we need to calculate performance on Respiratory-02:\n\n# Get the list object as output\nresp_out &lt;- ems_data |&gt; \n  nemsqar::respiratory_02_population(erecord_01_col = erecord_01,\n                                     incident_date_col = incident_date,\n                                     patient_DOB_col = patient_dob,\n                                     epatient_15_col = epatient_15,\n                                     epatient_16_col = epatient_16,\n                                     eresponse_05_col = eresponse_05,\n                                     evitals_12_col = evitals_12,\n                                     emedications_03_col = emedications_03,\n                                     eprocedures_03_col = eprocedures_03\n                                     )\n\n\n\nWe hope to add data on missing values to the filter_process output, soon!"
+    "section": "Explore the Respiratory-02 Population Function",
+    "text": "Explore the Respiratory-02 Population Function\nThis function will gather the records we need to calculate performance on Respiratory-02:\n\n# Get the list object as output\nresp_out &lt;- ems_data |&gt; \n  nemsqar::respiratory_02_population(erecord_01_col = erecord_01,\n                                     incident_date_col = incident_date,\n                                     patient_DOB_col = patient_dob,\n                                     epatient_15_col = epatient_15,\n                                     epatient_16_col = epatient_16,\n                                     eresponse_05_col = eresponse_05,\n                                     evitals_12_col = evitals_12,\n                                     emedications_03_col = emedications_03,\n                                     eprocedures_03_col = eprocedures_03\n                                     )\n\n\n\nWe hope to add data on missing values to the filter_process output, soon!"
   },
   {
     "objectID": "useR_2025.html#list-output-of-a-population-function",
