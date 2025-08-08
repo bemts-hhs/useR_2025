@@ -477,7 +477,7 @@ font-size: 2.5em;
   <meta name="generator" content="quarto-1.7.32">
 
   <meta name="author" content="Nicolas Foss, Ed.D., MS">
-  <meta name="dcterms.date" content="2025-08-10">
+  <meta name="dcterms.date" content="2025-08-09">
   <title>useR_2025 – Empowering Trauma and EMS QI Processes</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1099,7 +1099,7 @@ Nicolas Foss, Ed.D., MS
 </div>
 </div>
 
-  <p class="date">2025-08-10</p>
+  <p class="date">2025-08-09</p>
 </section>
 <section id="qi-matters" class="slide level2">
 <h2>QI Matters</h2>
@@ -1137,10 +1137,6 @@ Nicolas Foss, Ed.D., MS
 <li>Friendly to NTDB data formats and others</li>
 </ul>
 </section>
-<section id="traumar-examples" class="slide level2">
-<h2><code>traumar</code>: Examples!</h2>
-<p>Here, we will explore <code>traumar::seqic_indicator_1()</code></p>
-</section>
 <section id="example-trauma-data" class="slide level2">
 <h2>Example Trauma Data</h2>
 <p>See the GitHub repo for this presentation for how the data were generated.</p>
@@ -1163,22 +1159,27 @@ $ death            &lt;dbl&gt; 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1
 </div>
 </div>
 </section>
+<section id="traumar-examples" class="slide level2">
+<h2><code>traumar</code>: Examples!</h2>
+<p>Here, we will explore <code>traumar::seqic_indicator_1()</code></p>
+<p>Here we can answer the question: “In what proportion of trauma cases was the trauma surgeon present in ED within 15 minutes (1a) and 5 minutes (1d) of patient arrival?”</p>
+</section>
 <section id="run-the-seqic-indicator-1-function" class="slide level2">
 <h2>Run the SEQIC Indicator 1 Function</h2>
-<p>Group the output by verification level and calculate 95% confidence intervals</p>
+<p>Group the output by verification level and calculate 95% confidence intervals.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>indicator_1 <span class="ot">&lt;-</span> valid_data <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>indicator_1 <span class="ot">&lt;-</span> valid_data <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a></a>  traumar<span class="sc">::</span><span class="fu">seqic_indicator_1</span>(</span>
-<span id="cb3-3"><a></a>  <span class="at">trauma_team_activation_level =</span> activation_level,</span>
-<span id="cb3-4"><a></a>  <span class="at">trauma_team_physician_service_type =</span> provider_type,</span>
-<span id="cb3-5"><a></a>  <span class="at">level =</span> trauma_level,</span>
-<span id="cb3-6"><a></a>  <span class="at">included_levels =</span> <span class="fu">c</span>(<span class="st">&quot;I&quot;</span>, <span class="st">&quot;II&quot;</span>, <span class="st">&quot;III&quot;</span>, <span class="st">&quot;IV&quot;</span>),</span>
-<span id="cb3-7"><a></a>  <span class="at">unique_incident_id =</span> incident_id,</span>
-<span id="cb3-8"><a></a>  <span class="at">response_time =</span> response_minutes,</span>
-<span id="cb3-9"><a></a>  <span class="at">trauma_team_activation_provider =</span> provider,</span>
-<span id="cb3-10"><a></a>  <span class="at">groups =</span> <span class="st">&quot;trauma_level&quot;</span>,</span>
-<span id="cb3-11"><a></a>  <span class="at">calculate_ci =</span> <span class="st">&quot;wilson&quot;</span></span>
-<span id="cb3-12"><a></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a></a>    <span class="at">trauma_team_activation_level =</span> activation_level,</span>
+<span id="cb3-4"><a></a>    <span class="at">trauma_team_physician_service_type =</span> provider_type,</span>
+<span id="cb3-5"><a></a>    <span class="at">level =</span> trauma_level,</span>
+<span id="cb3-6"><a></a>    <span class="at">included_levels =</span> <span class="fu">c</span>(<span class="st">&quot;I&quot;</span>, <span class="st">&quot;II&quot;</span>, <span class="st">&quot;III&quot;</span>, <span class="st">&quot;IV&quot;</span>),</span>
+<span id="cb3-7"><a></a>    <span class="at">unique_incident_id =</span> incident_id,</span>
+<span id="cb3-8"><a></a>    <span class="at">response_time =</span> response_minutes,</span>
+<span id="cb3-9"><a></a>    <span class="at">trauma_team_activation_provider =</span> provider,</span>
+<span id="cb3-10"><a></a>    <span class="at">groups =</span> <span class="st">&quot;trauma_level&quot;</span>,</span>
+<span id="cb3-11"><a></a>    <span class="at">calculate_ci =</span> <span class="st">&quot;wilson&quot;</span></span>
+<span id="cb3-12"><a></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb3-13"><a></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(trauma_level, tidyselect<span class="sc">::</span><span class="fu">matches</span>(<span class="st">&quot;(?:seqic_|ci_)1[ad]&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -1186,11 +1187,7 @@ $ death            &lt;dbl&gt; 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1
 <h2>Results</h2>
 <p>The output <sup>1</sup>!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>indicator_1 <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb4-3"><a></a>    dplyr<span class="sc">::</span><span class="fu">across</span>(<span class="sc">-</span><span class="dv">1</span>, </span>
-<span id="cb4-4"><a></a>                  <span class="sc">~</span> <span class="fu">ifelse</span>(<span class="sc">!</span><span class="fu">is.na</span>(.), </span>
-<span id="cb4-5"><a></a>      traumar<span class="sc">::</span><span class="fu">pretty_percent</span>(<span class="at">variable =</span> ., <span class="at">n_decimal =</span> <span class="dv">2</span>), <span class="cn">NA_real_</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>calc_indicator_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 7
   trauma_level seqic_1a lower_ci_1a upper_ci_1a seqic_1d lower_ci_1d upper_ci_1d
@@ -1201,29 +1198,76 @@ $ death            &lt;dbl&gt; 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1
 4 IV           &lt;NA&gt;     &lt;NA&gt;        &lt;NA&gt;        27.17%   18.67%      37.62%     </code></pre>
 </div>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>We are just looking at the calculated performance columns for Indicators 1a and 1d and their 95% confidence intervals. By default, the <code>seqic_indicator_*()</code> functions will also give the numerator and denominator.</p></li></ol></aside></section>
-<section id="traumar-examples-1" class="slide level2">
-<h2><code>traumar</code>: Examples!</h2>
-<p>Here, we will explore <code>traumar::rm_bin_summary()</code></p>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>By default, the <code>seqic_indicator_*()</code> functions will also give the numerator and denominator, as well. I just kicked them out for space.</p></li></ol></aside></section>
+<section id="traumar-risk-adjusted-mortality" class="slide level2">
+<h2><code>traumar</code>: Risk-Adjusted Mortality</h2>
+<p>Functions assume that you have a variable representing predicted probabilities of survival for patients in your dataset <sup>1</sup>.</p>
+<ul>
+<li>Use coefficients from that logistic regression model to calculate predictions based on Revised Trauma Score, Injury Severity Score, Age, mechanism of injury.</li>
+<li><code>traumar::probability_of_survival()</code> calculates the predicted probabilities for you if you do not have it.</li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>Most trauma registry software will utilize the Trauma and Injury Severity Score (TRISS) method from the Major Trauma Outcomes Study.</p></li></ol></aside></section>
+<section id="traumar-risk-adjusted-mortality-1" class="slide level2">
+<h2><code>traumar</code>: Risk-Adjusted Mortality</h2>
+<ul>
+<li>Champion et al. (1990; MTOS) utilized linear bins (i.e. 0 - 0.1, 0.1 - 0.2, etc.).</li>
+<li>Empirically, patients distributed heavily in &gt; 80% survival probability.</li>
+<li>Napoli et al. (2017): use a nonlinear binning process <sup>1</sup>
+<ul>
+<li>Stratify patients into relevant groups</li>
+<li>Enable examination of outcome patterns across groups</li>
+</ul></li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>From the data on patients in these bins, we calculate the relative mortality metric.</p></li></ol></aside></section>
 <section id="run-traumarrm_bin_summary" class="slide level2">
-<h2>Run <code>traumar::rm_bin_summary()</code></h2>
+<h2>Run <code>traumar::rm_bin_summary()</code>!</h2>
 <p>No grouping and calculate 95% confidence intervals</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>rm_output <span class="ot">&lt;-</span> valid_data <span class="sc">|&gt;</span> </span>
-<span id="cb6-2"><a></a>  traumar<span class="sc">::</span><span class="fu">rm_bin_summary</span>(<span class="at">Ps_col =</span> Ps,</span>
-<span id="cb6-3"><a></a>                          <span class="at">outcome_col =</span> survival,</span>
-<span id="cb6-4"><a></a>                          <span class="at">group_vars =</span> <span class="cn">NULL</span>,</span>
-<span id="cb6-5"><a></a>                          <span class="at">n_samples =</span> <span class="dv">100</span>,</span>
-<span id="cb6-6"><a></a>                          <span class="at">Divisor1 =</span> <span class="dv">3</span>,</span>
-<span id="cb6-7"><a></a>                          <span class="at">Divisor2 =</span> <span class="dv">3</span>,</span>
-<span id="cb6-8"><a></a>                          <span class="at">Threshold_1 =</span> <span class="fl">0.8</span>,</span>
-<span id="cb6-9"><a></a>                          <span class="at">Threshold_2 =</span> <span class="fl">0.9</span>,</span>
-<span id="cb6-10"><a></a>                          <span class="at">seed =</span> <span class="dv">10232015</span></span>
-<span id="cb6-11"><a></a>                          ) <span class="sc">|&gt;</span> </span>
-<span id="cb6-12"><a></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">RMM =</span> population_RMM) <span class="sc">|&gt;</span> </span>
-<span id="cb6-13"><a></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(RMM, <span class="at">.before =</span> midpoint)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>rm_output <span class="ot">&lt;-</span> valid_data <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a></a>  traumar<span class="sc">::</span><span class="fu">rm_bin_summary</span>(</span>
+<span id="cb6-3"><a></a>    <span class="at">Ps_col =</span> Ps,</span>
+<span id="cb6-4"><a></a>    <span class="at">outcome_col =</span> survival,</span>
+<span id="cb6-5"><a></a>    <span class="at">group_vars =</span> <span class="cn">NULL</span>,</span>
+<span id="cb6-6"><a></a>    <span class="at">n_samples =</span> <span class="dv">100</span>,</span>
+<span id="cb6-7"><a></a>    <span class="at">Divisor1 =</span> <span class="dv">3</span>,</span>
+<span id="cb6-8"><a></a>    <span class="at">Divisor2 =</span> <span class="dv">3</span>,</span>
+<span id="cb6-9"><a></a>    <span class="at">Threshold_1 =</span> <span class="fl">0.8</span>,</span>
+<span id="cb6-10"><a></a>    <span class="at">Threshold_2 =</span> <span class="fl">0.9</span>,</span>
+<span id="cb6-11"><a></a>    <span class="at">seed =</span> <span class="dv">10232015</span></span>
+<span id="cb6-12"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-13"><a></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">RMM =</span> population_RMM) <span class="sc">|&gt;</span></span>
+<span id="cb6-14"><a></a>  dplyr<span class="sc">::</span><span class="fu">relocate</span>(RMM, <span class="at">.before =</span> midpoint)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<aside class="notes">
+<ul>
+<li><code>threshold_1</code> and <code>threshold_2</code>
+<ul>
+<li>These values define break points in the ordered survival probabilities where the binning logic changes.</li>
+<li><code>threshold_1</code> marks the lower bound of the “high survival probability” region.</li>
+<li><code>threshold_2</code> marks the upper bound of that region (very high survival probabilities).</li>
+</ul></li>
+</ul>
+<p>The function creates finer bins between these thresholds and coarser bins outside them, reflecting the approach used in the cited literature to improve resolution where outcome discrimination is most clinically relevant.</p>
+<ul>
+<li><code>divisor1</code> and <code>divisor2</code>
+<ul>
+<li>These control the bin widths within the ranges defined by the thresholds.</li>
+<li><code>divisor1</code> determines how many bins are created in the range from the lowest Ps value up to threshold_1.</li>
+<li><code>divisor2</code> determines how many bins are created between threshold_1 and threshold_2.</li>
+</ul></li>
+</ul>
+<p>Smaller divisor values produce fewer, broader bins; larger values produce narrower, more granular bins.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section id="traumarrm_bin_summary-results" class="slide level2">
 <h2><code>traumar::rm_bin_summary()</code> Results!</h2>
@@ -1294,24 +1338,23 @@ $ county          &lt;chr&gt; &quot;B&quot;, &quot;C&quot;, &quot;A&quot;, &quot
 <p>This function will gather the records we need to calculate performance on Respiratory-02:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="co"># Get the list object as output</span></span>
-<span id="cb11-2"><a></a>resp_out <span class="ot">&lt;-</span> ems_data <span class="sc">|&gt;</span> </span>
-<span id="cb11-3"><a></a>  nemsqar<span class="sc">::</span><span class="fu">respiratory_02_population</span>(<span class="at">erecord_01_col =</span> erecord_01,</span>
-<span id="cb11-4"><a></a>                                     <span class="at">incident_date_col =</span> incident_date,</span>
-<span id="cb11-5"><a></a>                                     <span class="at">patient_DOB_col =</span> patient_dob,</span>
-<span id="cb11-6"><a></a>                                     <span class="at">epatient_15_col =</span> epatient_15,</span>
-<span id="cb11-7"><a></a>                                     <span class="at">epatient_16_col =</span> epatient_16,</span>
-<span id="cb11-8"><a></a>                                     <span class="at">eresponse_05_col =</span> eresponse_05,</span>
-<span id="cb11-9"><a></a>                                     <span class="at">evitals_12_col =</span> evitals_12,</span>
-<span id="cb11-10"><a></a>                                     <span class="at">emedications_03_col =</span> emedications_03,</span>
-<span id="cb11-11"><a></a>                                     <span class="at">eprocedures_03_col =</span> eprocedures_03</span>
-<span id="cb11-12"><a></a>                                     )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-2"><a></a>resp_out <span class="ot">&lt;-</span> ems_data <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a></a>  nemsqar<span class="sc">::</span><span class="fu">respiratory_02_population</span>(</span>
+<span id="cb11-4"><a></a>    <span class="at">erecord_01_col =</span> erecord_01,</span>
+<span id="cb11-5"><a></a>    <span class="at">incident_date_col =</span> incident_date,</span>
+<span id="cb11-6"><a></a>    <span class="at">patient_DOB_col =</span> patient_dob,</span>
+<span id="cb11-7"><a></a>    <span class="at">epatient_15_col =</span> epatient_15,</span>
+<span id="cb11-8"><a></a>    <span class="at">epatient_16_col =</span> epatient_16,</span>
+<span id="cb11-9"><a></a>    <span class="at">eresponse_05_col =</span> eresponse_05,</span>
+<span id="cb11-10"><a></a>    <span class="at">evitals_12_col =</span> evitals_12,</span>
+<span id="cb11-11"><a></a>    <span class="at">emedications_03_col =</span> emedications_03,</span>
+<span id="cb11-12"><a></a>    <span class="at">eprocedures_03_col =</span> eprocedures_03</span>
+<span id="cb11-13"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
-<aside><div>
-<p>We hope to add data on missing values to the <code>filter_process</code> output, soon!</p>
-</div></aside></section>
+</section>
 <section id="list-output-of-a-population-function" class="slide level2">
 <h2>List Output of a Population Function</h2>
+<p>We hope to add data on missing values in variables used for calculations to the <code>filter_process</code> output, soon!</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="co"># Examine resp_out&#39;s contents</span></span>
 <span id="cb12-2"><a></a><span class="fu">summary</span>(resp_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1349,22 +1392,23 @@ computing_population 22     tbl_df list</code></pre>
 <h2>NEMSQA Respiratory-02</h2>
 <p>What proportion of patients with hypoxia had oxygen administered?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>resp_02 <span class="ot">&lt;-</span> ems_data <span class="sc">|&gt;</span> </span>
-<span id="cb16-2"><a></a>  nemsqar<span class="sc">::</span><span class="fu">respiratory_02</span>(<span class="at">erecord_01_col =</span> erecord_01,</span>
-<span id="cb16-3"><a></a>                                     <span class="at">incident_date_col =</span> incident_date,</span>
-<span id="cb16-4"><a></a>                                     <span class="at">patient_DOB_col =</span> patient_dob,</span>
-<span id="cb16-5"><a></a>                                     <span class="at">epatient_15_col =</span> epatient_15,</span>
-<span id="cb16-6"><a></a>                                     <span class="at">epatient_16_col =</span> epatient_16,</span>
-<span id="cb16-7"><a></a>                                     <span class="at">eresponse_05_col =</span> eresponse_05,</span>
-<span id="cb16-8"><a></a>                                     <span class="at">evitals_12_col =</span> evitals_12,</span>
-<span id="cb16-9"><a></a>                                     <span class="at">emedications_03_col =</span> emedications_03,</span>
-<span id="cb16-10"><a></a>                                     <span class="at">eprocedures_03_col =</span> eprocedures_03,</span>
-<span id="cb16-11"><a></a>                                     <span class="at">confidence_interval =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb16-12"><a></a>                                     <span class="at">method =</span> <span class="st">&quot;wilson&quot;</span>,</span>
-<span id="cb16-13"><a></a>                                     <span class="at">conf.level =</span> <span class="fl">0.95</span>,</span>
-<span id="cb16-14"><a></a>                                     <span class="at">correct =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb16-15"><a></a>                                     <span class="at">.by =</span> county</span>
-<span id="cb16-16"><a></a>                                     )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>resp_02 <span class="ot">&lt;-</span> ems_data <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a></a>  nemsqar<span class="sc">::</span><span class="fu">respiratory_02</span>(</span>
+<span id="cb16-3"><a></a>    <span class="at">erecord_01_col =</span> erecord_01,</span>
+<span id="cb16-4"><a></a>    <span class="at">incident_date_col =</span> incident_date,</span>
+<span id="cb16-5"><a></a>    <span class="at">patient_DOB_col =</span> patient_dob,</span>
+<span id="cb16-6"><a></a>    <span class="at">epatient_15_col =</span> epatient_15,</span>
+<span id="cb16-7"><a></a>    <span class="at">epatient_16_col =</span> epatient_16,</span>
+<span id="cb16-8"><a></a>    <span class="at">eresponse_05_col =</span> eresponse_05,</span>
+<span id="cb16-9"><a></a>    <span class="at">evitals_12_col =</span> evitals_12,</span>
+<span id="cb16-10"><a></a>    <span class="at">emedications_03_col =</span> emedications_03,</span>
+<span id="cb16-11"><a></a>    <span class="at">eprocedures_03_col =</span> eprocedures_03,</span>
+<span id="cb16-12"><a></a>    <span class="at">confidence_interval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-13"><a></a>    <span class="at">method =</span> <span class="st">&quot;wilson&quot;</span>,</span>
+<span id="cb16-14"><a></a>    <span class="at">conf.level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb16-15"><a></a>    <span class="at">correct =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-16"><a></a>    <span class="at">.by =</span> county</span>
+<span id="cb16-17"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="respiratory-02-results" class="slide level2">
@@ -1401,7 +1445,7 @@ computing_population 22     tbl_df list</code></pre>
 </ul></li>
 <li>Reproducible, interpretable, fast</li>
 </ul>
-<aside><ol class="aside-footnotes"><li id="fn2"><p>Similar trauma/EMS bureaus in Oregon and Connecticut are using <code>nemsqar</code>, along with the quality managers at Dallas Fire and Washington D.C. Fire</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn4"><p>Similar trauma/EMS bureaus in Oregon and Connecticut are using <code>nemsqar</code>, along with the quality managers at Dallas Fire and Washington D.C. Fire</p></li></ol></aside></section>
 <section id="join-us" class="slide level2">
 <h2>Join us</h2>
 <ul>
