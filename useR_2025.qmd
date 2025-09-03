@@ -160,13 +160,13 @@ valid_data <- dplyr::bind_cols(valid_data, data)
 dplyr::glimpse(valid_data)
 ```
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ## `traumar`: Examples!
 
 Here, we will explore `traumar::seqic_indicator_1()`
 
-Here we can answer the question: "In what proportion of trauma cases was the trauma surgeon present in ED within 15 minutes (1a) and 5 minutes (1d) of patient arrival?" 
+Here we can answer the question: "In what proportion of trauma cases was the trauma surgeon present in ED within 15 minutes (1a) and 5 minutes (1d) of patient arrival?"
 
 ------------------------------------------------------------------------
 
@@ -192,7 +192,7 @@ indicator_1 <- valid_data |>
 
 ```
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ## Results
 
@@ -218,30 +218,30 @@ calc_indicator_1 <- indicator_1 |>
 calc_indicator_1
 ```
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ## `traumar`: Risk-Adjusted Mortality
 
 Functions assume that you have a variable representing predicted probabilities of survival for patients in your dataset [^2].
 
+[^2]: Most trauma registry software will utilize the Trauma and Injury Severity Score (TRISS) method from the Major Trauma Outcomes Study.
+
 -   Use coefficients from that logistic regression model to calculate predictions based on Revised Trauma Score, Injury Severity Score, Age, mechanism of injury.
 -   `traumar::probability_of_survival()` calculates the predicted probabilities for you if you do not have it.
 
-[^2]: Most trauma registry software will utilize the Trauma and Injury Severity Score (TRISS) method from the Major Trauma Outcomes Study.
-
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ## `traumar`: Risk-Adjusted Mortality
 
-- Champion et al. (1990; MTOS) utilized linear bins (i.e. 0 - 0.1, 0.1 - 0.2, etc.). 
-- Empirically, patients distributed heavily in \> 80% survival probability. 
-- Napoli et al. (2017): use a nonlinear binning process [^3]
-  - Stratify patients into relevant groups
-  - Enable examination of outcome patterns across groups
+-   Champion et al. (1990; MTOS) utilized linear bins (i.e. 0 - 0.1, 0.1 - 0.2, etc.).
+-   Empirically, patients distributed heavily in \> 80% survival probability.
+-   Napoli et al. (2017): use a nonlinear binning process [^3]
+    -   Stratify patients into relevant groups
+    -   Enable examination of outcome patterns across groups
 
 [^3]: From the data on patients in these bins, we calculate the relative mortality metric.
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ## Run `traumar::rm_bin_summary()`!
 
@@ -264,12 +264,11 @@ rm_output <- valid_data |>
   dplyr::relocate(RMM, .before = midpoint)
 ```
 
-::: {.notes}
-
-- `threshold_1` and `threshold_2` 
-  - These values define break points in the ordered survival probabilities where the binning logic changes. 
-  - `threshold_1` marks the lower bound of the "high survival probability" region. 
-  - `threshold_2` marks the upper bound of that region (very high survival probabilities).
+::: notes
+-   `threshold_1` and `threshold_2`
+    -   These values define break points in the ordered survival probabilities where the binning logic changes.
+    -   `threshold_1` marks the lower bound of the "high survival probability" region.
+    -   `threshold_2` marks the upper bound of that region (very high survival probabilities).
 
 The function creates finer bins between these thresholds and coarser bins outside them, reflecting the approach used in the cited literature to improve resolution where outcome discrimination is most clinically relevant.
 
@@ -279,7 +278,6 @@ The function creates finer bins between these thresholds and coarser bins outsid
     -   `divisor2` determines how many bins are created between threshold_1 and threshold_2.
 
 Smaller divisor values produce fewer, broader bins; larger values produce narrower, more granular bins.
-
 :::
 
 ------------------------------------------------------------------------
